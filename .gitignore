@@ -52,3 +52,12 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# OS
+.DS_STORE
+
+# other
+localtestdata/
+
+
+.fake
