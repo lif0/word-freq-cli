@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="pdf.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\core\core.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="PdfPig" Version="0.1.11" />
+    </ItemGroup>
+
+</Project>
