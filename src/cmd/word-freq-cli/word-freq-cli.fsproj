@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>cli</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="file.fs" />
+        <Compile Include="main.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\wf.Core\wf.Core.fsproj" />
+      <ProjectReference Include="..\..\wf.Pdf\wf.Pdf.fsproj" />
+    </ItemGroup>
+
+</Project>

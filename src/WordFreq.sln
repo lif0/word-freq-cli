@@ -1,15 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "core", "core\core.fsproj", "{91BCE627-DCE4-478A-BDC1-2CEF020084CC}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "wf.Core", "wf.Core\wf.Core.fsproj", "{91BCE627-DCE4-478A-BDC1-2CEF020084CC}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "pdf", "pdf\pdf.fsproj", "{A1EC7052-3F96-4DD6-88C2-4C1A36CCEC6C}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "wf.Pdf", "wf.Pdf\wf.Pdf.fsproj", "{A1EC7052-3F96-4DD6-88C2-4C1A36CCEC6C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "testdata", "testdata", "{82373E80-BB5B-40CE-A563-8B85B0FBE817}"
-	ProjectSection(SolutionItems) = preProject
-		..\testdata\oldmansea.pdf = ..\testdata\oldmansea.pdf
-	EndProjectSection
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "word-freq-cli", "cmd\word-freq-cli\word-freq-cli.fsproj", "{BD690FAA-7E3A-4397-941A-EA105855A52F}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "wordfreq", "wordfreq\wordfreq.fsproj", "{BD690FAA-7E3A-4397-941A-EA105855A52F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cmd", "cmd", "{24F225FC-EA17-4223-A618-A848CC9512A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,5 +26,8 @@ Global
 		{BD690FAA-7E3A-4397-941A-EA105855A52F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD690FAA-7E3A-4397-941A-EA105855A52F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD690FAA-7E3A-4397-941A-EA105855A52F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD690FAA-7E3A-4397-941A-EA105855A52F} = {24F225FC-EA17-4223-A618-A848CC9512A2}
 	EndGlobalSection
 EndGlobal

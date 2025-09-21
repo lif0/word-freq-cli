@@ -5,7 +5,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Program.fs"/>
+        <Compile Include="statistic.fs" />
+        <Compile Include="config.fs" />
+        <Compile Include="helpers.fs" />
     </ItemGroup>
 
 </Project>
