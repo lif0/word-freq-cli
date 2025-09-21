@@ -1,12 +1,37 @@
 ﻿module wf.Core.Statistic
 
-type Word = { Word: string; Freq: uint32 }
-let private toWord word = { Word = word; Freq = 0u }
+type WordItem = { Word: string; Freq: uint32; SentenceIDs: uint array }
+type WordStatistic = { Words: WordItem array; Sentences: string array }
 
-let Build (wordList: string array) (fnormalize: string -> string) (ffilter: string -> bool) =
-    wordList
-    |> Array.map fnormalize
-    |> Array.filter ffilter
-    |> Array.groupBy id
-    |> Array.map (fun (word, group) -> { Word = word; Freq = uint32 group.Length })
-    |> Array.sortByDescending (fun word -> word.Freq)
+let Build (cfg: Config)
+        (sentenceArray: string array)  (fnormalizeSencence: string -> string)
+        (fnormalizeWord: string -> string) (ffilterWord: string -> bool) =
+    
+    let normalizedSentences =
+        sentenceArray
+        |> Array.map fnormalizeSencence
+    
+    let splitter (sentence: string) =
+        sentence.Split(cfg.SplitWord.Separator, cfg.SplitWord.Options)
+        |> Array.toList
+
+    normalizedSentences
+    |> Array.mapi (fun i sentence ->
+        let words = 
+            splitter sentence
+            |> List.map fnormalizeWord
+            |> List.filter ffilterWord
+        (uint i, words))
+    |> Array.fold (fun acc (sentId, words) ->
+        words
+        |> List.fold (fun innerAcc word ->
+            match Map.tryFind word innerAcc with
+            | Some (freq, ids) -> Map.add word (freq + 1u, Set.add sentId ids) innerAcc
+            | None -> Map.add word (1u, Set.singleton sentId) innerAcc
+        ) acc
+    ) Map.empty
+    |> Map.toSeq
+    |> Seq.map (fun (word, (freq, ids)) -> { Word = word; Freq = freq; SentenceIDs = Set.toArray ids })
+    |> Seq.sortByDescending (fun w -> w.Freq)
+    |> Seq.toArray
+    |> fun words -> { Words = words; Sentences = normalizedSentences }

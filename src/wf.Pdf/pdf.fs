@@ -16,4 +16,4 @@ module Reader =
             |> String.concat " "
 
         
-        text.Split(cfg.Split.Separator, cfg.Split.Options)
+        text.Split(cfg.SplitSentence.Separator, cfg.SplitSentence.Options)

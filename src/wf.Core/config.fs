@@ -11,6 +11,7 @@ type ConfigSplit = {
 
 type Config = {
     Path :string
-    Split : ConfigSplit
+    SplitSentence : ConfigSplit
+    SplitWord : ConfigSplit
     RemoveStr: string array
 }

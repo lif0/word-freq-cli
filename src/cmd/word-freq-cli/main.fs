@@ -15,7 +15,7 @@ let main argv =
         let fileInPath = argv.[0]
         
         let fileInExt = Path.GetExtension(fileInPath)
-        let fileOutPath = $"{Path.Combine(fileInPath.Replace(Path.GetFileName(fileInPath), String.Empty),Path.GetFileNameWithoutExtension(fileInPath))}-WordStats.txt"
+        let fileOutPath = $"{Path.Combine(fileInPath.Replace(Path.GetFileName(fileInPath), String.Empty),Path.GetFileNameWithoutExtension(fileInPath))}-WordStats"
 
         let readFile =
             match fileInExt.ToLower() with
@@ -28,17 +28,33 @@ let main argv =
                 
         let cfg =  {
             Path = fileInPath
-            Split = {
-                //Separator = [|' '; '\n'; '\r'; '\t'; '.'; ','; '!'; '?'; ';'; ':'|]
-                Separator = [|' '; '/'|]
+            SplitSentence = {
+                Separator = [|'.'; '•'|]
+                Options= StringSplitOptions.RemoveEmptyEntries
+            }
+            SplitWord = {
+                //Separator = [|' '; '\n'; '\r'; '\t'; '.'; ','; '!'; '?'; ';'; ':'; '•'|]
+                Separator = [|' '; '•'|]
                 Options= StringSplitOptions.RemoveEmptyEntries
             }
             RemoveStr = [|"The Old Man and the Sea"; "www.Asiaing.com"; "Asiaing.com"|]
         }
         
         
-        let rawWords = readFile cfg
-
+        let sentences = readFile cfg
+        let normalizeSentence (s: string) =
+            s
+            |> fun x -> Regex.Replace(x, @"\s+", " ")  // Убираем все множественные пробелы и whitespace сразу
+            |> fun x -> x.Replace("”", "\"")
+            |> fun x -> x.Replace("“", "\"")
+            |> fun x -> Regex.Replace(x, @"\s*\.?\s*\d+\s*\.?\s*-\s*", " ")     // Для .14-, 14- etc.
+            |> fun x -> Regex.Replace(x, @"\s*-\s*\.?\s*\d+\s*\.?\s*", " ")    // Для -14., -14 etc.
+            |> fun x -> Regex.Replace(x, @"\s*\[\s*\d+\s*\]\s*", " ")          // Для [38], [ 38 ] etc.
+            |> fun x -> Regex.Replace(x, @"\s*\d+\s*\.\s*\W\s*", " ")          // Для 51. , 14; etc.
+            |> fun x -> Regex.Replace(x, @"\s+", " ")  // Повторно нормализуем пробелы после удалений
+            |> fun x -> x.Trim([|' '; '\n'; '\r'; '\t'; '-';|])
+            
+            
         let filterWord w = not <| String.IsNullOrWhiteSpace(w)
         let normalizeWord (word: string) =
             word
@@ -50,12 +66,12 @@ let main argv =
             |> fun x -> x.Trim([|' '; '\n'; '\r'; '\t'; '.'; ','; '!'; '?'; ';'; ':'; '.'; '”'; '“'; '•'; ')'; '('; '"'; '[';']'; '-'|])
         
       
-        let words = Statistic.Build rawWords normalizeWord filterWord
+        let stats = Statistic.Build cfg sentences normalizeSentence normalizeWord filterWord
         
-        printfn $"file contains {words |> Array.sumBy(fun x -> x.Freq)} words and {words.Length} uniq words"
+        printfn $"file contains \n{stats.Sentences.Length} sentences\n{stats.Words |> Array.sumBy(fun x -> x.Freq)} words\n{stats.Words.Length} uniq words"
         
-        io.WriteToFile fileOutPath words
-        |> Async.RunSynchronously
+        io.SaveAsTxt fileOutPath stats |> Async.RunSynchronously
+        io.SaveAsJson fileOutPath stats |> Async.RunSynchronously
 
         printfn $"result wrote to {fileOutPath}"
                 
