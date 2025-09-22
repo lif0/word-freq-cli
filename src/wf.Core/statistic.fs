@@ -4,15 +4,11 @@ type WordItem = { Word: string; Freq: uint32; SentenceIDs: uint array }
 type WordStatistic = { Words: WordItem array; Sentences: string array }
 
 let Build (cfg: Config)
-        (sentenceArray: string array)  (fnormalizeSencence: string -> string)
+        (normalizedSentences: string array)       
         (fnormalizeWord: string -> string) (ffilterWord: string -> bool) =
-    
-    let normalizedSentences =
-        sentenceArray
-        |> Array.map fnormalizeSencence
-    
+
     let splitter (sentence: string) =
-        sentence.Split(cfg.SplitWord.Separator, cfg.SplitWord.Options)
+        sentence.Split(cfg.Word.Split.Separator, cfg.Word.Split.Options)
         |> Array.toList
 
     normalizedSentences

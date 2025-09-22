@@ -7,7 +7,6 @@
     <ItemGroup>
         <Compile Include="config.fs" />
         <Compile Include="statistic.fs" />
-        <Compile Include="helpers.fs" />
     </ItemGroup>
 
 </Project>

@@ -1,17 +1,42 @@
 namespace wf.Core
 
 open System
+open System.Collections.Generic
 
-type ConfigSplit = {
+type SplitConfig = {
     Separator: char array
     Options: StringSplitOptions
 }
 
-//type IConfigSpec interface =  
+type WordNormalizeConfig = {
+    Replace: Dictionary<string, string>
+    ReplaceRegex: KeyValuePair<string, string> array
+    Trim: char array
+    TrimAfter: char array
+    ToLower: bool
+}
+
+type SentenceNormalizeConfig = {
+    Replace: Dictionary<string, string>
+    ReplaceRegex: KeyValuePair<string, string> array
+    Trim: char array
+}
+
+
+type WordConfig = {
+    Split : SplitConfig
+    Suspend: HashSet<string>
+    Normalize: WordNormalizeConfig
+}
+
+type SentenceConfig = {
+    Split : SplitConfig
+    Suspend: HashSet<string>
+    Normalize: SentenceNormalizeConfig
+}
 
 type Config = {
     Path :string
-    SplitSentence : ConfigSplit
-    SplitWord : ConfigSplit
-    RemoveStr: string array
+    Sentence : SentenceConfig
+    Word: WordConfig
 }
