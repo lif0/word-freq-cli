@@ -70,7 +70,7 @@ let mutable globalConfig = {
                         KeyValuePair("\\d+", String.Empty)
                     |]
                     Trim = [|' '; '\n'; '\r'; '\t'; '.'; ','; '!'; '?'; ';'; ':'; '.'; '”'; '“'; '•'; ')'; '('; '"'; '[';']'; '-'|]
-                    TrimAfter = [|'’'; ''';'’'|]
+                    TrimAfter = [|''';'’'|]
                     ToLower = true
                 }
             }            
@@ -78,7 +78,7 @@ let mutable globalConfig = {
 let emptyRunner _ = Array.empty
 
 [<EntryPoint>]
-let main argv = 
+let main argv =
     if argv.Length > 0 then
         let fileInPath = argv[0]
         
